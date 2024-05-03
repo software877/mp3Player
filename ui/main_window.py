@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 
 from player_view import PlayerView
@@ -27,22 +28,38 @@ class MainWindow(tk.Tk, PlayerView):
         self.config(menu=main_menu)
 
         self.base_frame = BaseFrame(self)
-
+        self.base_frame.tree.bind('<Double-1>', self.show_element_name)
         self.base_frame.volume.config(command=self.update_volume)
         self.base_frame.sound_length_value.config(command=self.update_label)
 
         self.mainloop()
 
+    def choose_directory(self):
+        directory = askdirectory()
+
+        for item in self.base_frame.tree.get_children(''):
+            self.base_frame.tree.delete(item)
+        for root, dirs, files in os.walk(directory):
+            for file in files:
+                relpath = os.path.relpath(os.path.join(root, file), start=directory)
+                self.base_frame.tree.insert('', 'end', text=relpath)
 
     def open_new_directory(self):
         self.directory = askdirectory()
         self.fill_tree()
-        print(self.directory)
 
     def fill_tree(self):
         self.base_frame.tree.heading('#0', text=self.directory, anchor='w')
-        #for i in range(100):
-            #self.base_frame.tree.insert("", "end", text=f"Row {i}")
+        for item in self.base_frame.tree.get_children(''):
+            self.base_frame.tree.delete(item)
+        for root, dirs, files in os.walk(self.directory):
+            for file in files:
+                relpath = os.path.relpath(os.path.join(root, file), start=self.directory)
+                self.base_frame.tree.insert('', 'end', text=relpath)
+
+    def show_element_name(self, event):
+        element_name = self.base_frame.tree.item(self.base_frame.tree.selection())['text']
+        print(element_name)
 
     def update_label(self, value):
         self.base_frame.sound_length_label.config(text=f"Length: {value}")

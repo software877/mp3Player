@@ -7,6 +7,7 @@ class PlayerPresenter():
     is_paused: bool = False
     player_view: PlayerView | None = None
     sound_name = ""
+    is_button_length_pressed = False
 
     def __init__(self):
         pass
@@ -15,6 +16,16 @@ class PlayerPresenter():
         if sound != "/":
             self.sound_name = sound
             self.player_view.set_sound_length(sound)
+
+
+    def set_button_pressed(self, value):
+        self.is_button_length_pressed = value
+
+    def button_length_listener(self):
+        if self.is_button_length_pressed:
+            print("pressed!!!")
+            return
+        #self.player_view.get_sound_position()
 
     def bind(self, player_view: PlayerView):
         self.player_view = player_view

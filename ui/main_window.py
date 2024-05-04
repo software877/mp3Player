@@ -23,7 +23,7 @@ class MainWindow(tk.Tk, PlayerView):
         pygame.init()
         pygame.mixer.music.set_endevent(self.STOPPED_PLAYING)
 
-        threading.Thread(target=self.event_listener).start()
+        #threading.Thread(target=self.event_listener).start()
 
         self.player_presenter.bind(self)
 
@@ -37,13 +37,27 @@ class MainWindow(tk.Tk, PlayerView):
 
         self.base_frame = BaseFrame(self)
         self.base_frame.tree.bind('<Double-1>', self.show_element_name)
+        self.base_frame.sound_length_value.bind('<Button-1>', self.base)
+        self.base_frame.sound_length_value.bind('<ButtonRelease-1>', self.unpress)
+
         self.base_frame.volume.config(command=self.update_volume)
         self.base_frame.sound_length_value.config(command=self.update_label)
         self.base_frame.play_button.config(command=self.player_presenter.play)
 
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
+        threading.Thread(target=self.event_listener).start()
+
+
         self.mainloop()
+
+    def base(self, event):
+        self.player_presenter.set_button_pressed(True)
+        print("clicked!!!")
+
+    def unpress(self, event):
+        self.player_presenter.set_button_pressed(False)
+        print("unpressed")
 
     def on_closing(self):
         self.PROGRAM_RUNS = False
@@ -61,6 +75,14 @@ class MainWindow(tk.Tk, PlayerView):
                 if event.type == self.STOPPED_PLAYING:
                     print("sound finished!!!")
                     self.player_presenter.stop()
+
+            self.player_presenter.button_length_listener()
+
+
+    def get_sound_position(self):
+        pos = pygame.mixer.music.get_pos()
+        print(pos)
+        #self.base_frame.sound_length_value.set(pos)
 
     def open_new_directory(self):
         self.directory = askdirectory()
@@ -81,6 +103,7 @@ class MainWindow(tk.Tk, PlayerView):
         self.player_presenter.play(start=True)
 
     def update_label(self, value):
+        pygame.mixer.music.set_pos(float(value))
         self.base_frame.sound_length_label.config(text=f"Length: {value}")
 
     def update_volume(self, value):

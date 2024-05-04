@@ -17,6 +17,9 @@ class PlayerView():
     def play(self, sound_name):
         pass
 
+    def get_sound_position(self):
+        pass
+
     def resume(self):
         pass
 

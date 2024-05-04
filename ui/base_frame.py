@@ -6,7 +6,7 @@ import tkinter as tk
 class BaseFrame(Frame):
 
     tree: ttk.Treeview = None
-    button1: ttk.Button = None
+    play_button: ttk.Button = None
     sound_length_label: ttk.Label = None
     sound_volume_label: ttk.Label = None
     volume: ttk.Scale = None
@@ -17,16 +17,11 @@ class BaseFrame(Frame):
 
         self.tree = ttk.Treeview(self)
 
-        self.button1 = ttk.Button(self, text="Play")
-
-
-        #for i in range(100):
-        #    self.tree.insert("", "end", text=f"Row {i}")
+        self.play_button = ttk.Button(self, text="Play")
 
         self.xscrollbar = tk.Scrollbar(self, orient='horizontal', command=self.tree.xview)
         self.yscrollbar = tk.Scrollbar(self, command=self.tree.yview)
 
-        # Связываем скроллбары с деревом
         self.tree.configure(xscrollcommand=self.xscrollbar.set, yscrollcommand=self.yscrollbar.set)
 
         #self.tree.place(relx=.5, rely=.5, anchor="center")
@@ -44,7 +39,7 @@ class BaseFrame(Frame):
         self.yscrollbar.grid(row=0, column=1, sticky='ns')
 
 
-        self.button1.grid(row=2, column=0, sticky='sew')
+        self.play_button.grid(row=2, column=0, sticky='sew')
 
         scale_var = tk.DoubleVar()
         scale_var.set(5)

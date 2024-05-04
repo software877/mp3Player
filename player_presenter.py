@@ -1,13 +1,18 @@
 from player_view import PlayerView
+import threading
 
 
 class PlayerPresenter():
     is_playing: bool = False
     is_paused: bool = False
     player_view: PlayerView | None = None
+    sound_name = ""
 
     def __init__(self):
         pass
+
+    def set_sound_name(self, sound):
+        self.sound_name = sound
 
     def bind(self, player_view: PlayerView):
         self.player_view = player_view
@@ -15,7 +20,16 @@ class PlayerPresenter():
     def unbind(self):
         self.player_view = None
 
-    def play(self):
+    def stop(self):
+        self.player_view.to_the_beginning()
+
+    def play(self, start = False):
+        if start:
+            threading.Thread(target=self.player_view.play, args=[self.sound_name]).start()
+            self.is_playing = True
+            self.is_paused = False
+            return
+
         if self.is_playing:
             self.player_view.pause()
             self.is_paused = True
@@ -28,5 +42,7 @@ class PlayerPresenter():
             self.is_playing = True
             return
 
-        self.player_view.play()
-        self.is_playing = True
+        if self.sound_name != "":
+            threading.Thread(target=self.player_view.play, args=[self.sound_name]).start()
+            self.is_playing = True
+            self.is_paused = False

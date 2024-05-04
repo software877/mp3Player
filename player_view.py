@@ -8,7 +8,9 @@ class PlayerView():
     def stop(self):
         pass
 
-    def play(self):
+    def to_the_beginning(self):
+        pass
+    def play(self, sound_name):
         pass
 
     def resume(self):

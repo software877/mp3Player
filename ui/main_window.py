@@ -15,6 +15,7 @@ class MainWindow(tk.Tk, PlayerView):
     directory = ""
     STOPPED_PLAYING = pygame.USEREVENT + 1
     PROGRAM_RUNS = True
+    sound_length = 0
 
     def __init__(self):
         super().__init__()
@@ -48,6 +49,12 @@ class MainWindow(tk.Tk, PlayerView):
         self.PROGRAM_RUNS = False
         self.destroy()
 
+    def set_sound_length(self, value):
+        sound = pygame.mixer.Sound(value)
+        self.sound_length = sound.get_length()
+        self.base_frame.sound_length_value.config(to=self.sound_length)
+        print(self.sound_length)
+
     def event_listener(self):
         while self.PROGRAM_RUNS:
             for event in pygame.event.get():
@@ -74,11 +81,10 @@ class MainWindow(tk.Tk, PlayerView):
         self.player_presenter.play(start=True)
 
     def update_label(self, value):
-
         self.base_frame.sound_length_label.config(text=f"Length: {value}")
 
     def update_volume(self, value):
-        pygame.mixer.music.set_volume(int(value)/10)
+        pygame.mixer.music.set_volume(int(value) / 10)
 
     def stop(self):
         print("stop")

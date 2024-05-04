@@ -5,6 +5,10 @@ class PlayerView():
     def get_music_directory(self):
         pass
 
+
+    def set_sound_length(self, value):
+        pass
+
     def stop(self):
         pass
 

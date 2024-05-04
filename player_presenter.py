@@ -14,6 +14,7 @@ class PlayerPresenter():
     def set_sound_name(self, sound):
         if sound != "/":
             self.sound_name = sound
+            self.player_view.set_sound_length(sound)
 
     def bind(self, player_view: PlayerView):
         self.player_view = player_view

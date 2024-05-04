@@ -70,15 +70,15 @@ class MainWindow(tk.Tk, PlayerView):
 
     def show_element_name(self, event):
         element_name = self.base_frame.tree.item(self.base_frame.tree.selection())['text']
-        print(self.directory + "/" + element_name)
         self.player_presenter.set_sound_name(self.directory + "/" + element_name)
         self.player_presenter.play(start=True)
 
     def update_label(self, value):
+
         self.base_frame.sound_length_label.config(text=f"Length: {value}")
 
     def update_volume(self, value):
-        self.base_frame.sound_volume_label.config(text=f"Volume: {value}")
+        pygame.mixer.music.set_volume(int(value)/10)
 
     def stop(self):
         print("stop")
@@ -86,10 +86,6 @@ class MainWindow(tk.Tk, PlayerView):
     def play(self, sound_name):
         pygame.mixer.music.load(sound_name)
         pygame.mixer.music.play()
-
-        '''for i in range(0, 5):
-            time.sleep(1)
-            print("play")'''
 
     def resume(self):
         print("onResume")

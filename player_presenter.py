@@ -12,7 +12,8 @@ class PlayerPresenter():
         pass
 
     def set_sound_name(self, sound):
-        self.sound_name = sound
+        if sound != "/":
+            self.sound_name = sound
 
     def bind(self, player_view: PlayerView):
         self.player_view = player_view
@@ -24,7 +25,7 @@ class PlayerPresenter():
         self.player_view.to_the_beginning()
 
     def play(self, start = False):
-        if start:
+        if start and self.sound_name != "":
             threading.Thread(target=self.player_view.play, args=[self.sound_name]).start()
             self.is_playing = True
             self.is_paused = False

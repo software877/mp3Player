@@ -11,6 +11,7 @@ class BaseFrame(Frame):
     volume: ttk.Scale = None
     sound_length_value: ttk.Scale = None
     loop_value = 0
+    sound_length_var = 0
 
     def __init__(self, root):
         super().__init__(master=root)
@@ -34,6 +35,7 @@ class BaseFrame(Frame):
         self.play_button.grid(row=2, column=0, sticky='sew')
 
         scale_var = tk.DoubleVar()
+        self.sound_length_var = tk.DoubleVar()
         scale_var.set(5)
 
         self.volume_label = ttk.Label(self, text="Volume:")
@@ -47,7 +49,7 @@ class BaseFrame(Frame):
         self.sound_length = ttk.Label(self, text="Length:")
         self.sound_length.grid(row=5, column=0, sticky='sew')
 
-        self.sound_length_value = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL)
+        self.sound_length_value = tk.Scale(self, variable=self.sound_length_var, from_=0, to=10, orient=tk.HORIZONTAL)
         self.sound_length_value.grid(row=6, column=0, sticky='sew')
 
         self.sound_length_label = ttk.Label(self, text="Length: 50")

@@ -31,6 +31,9 @@ class PlayerView():
     def change_sound_position(self, value):
         pass
 
+    def update_slider(self, value):
+        pass
+
     def loop_checkbox_clicked(self):
         pass
 

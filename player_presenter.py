@@ -1,3 +1,5 @@
+import time
+
 from player_view import PlayerView
 import threading
 
@@ -8,11 +10,38 @@ class PlayerPresenter():
     is_loop: bool = False
     player_view: PlayerView | None = None
     sound_name = ""
+    __sound_seconds_count = 0
     is_button_length_pressed = False
     __sound_position_value = 0
 
     def __init__(self):
         pass
+
+    def reset_sounds_second(self):
+        self.__sound_seconds_count = 0
+
+    def raise_sound_second(self):
+        self.__sound_seconds_count +=1
+        time.sleep(1)
+        print(f"seconds count: {self.__sound_seconds_count}")
+
+    def set_sound_seconds(self, value):
+        self.__sound_seconds_count = value
+
+    def continue_sound(self):
+        self.raise_sound_second()
+
+
+    def run_seconds_counter(self):
+        if self.is_playing:
+            self.continue_sound()
+            if not self.is_button_length_pressed:
+                print("button not sound")
+                self.player_view.update_slider(self.__sound_seconds_count)
+
+            return
+        if not self.is_paused:
+            self.reset_sounds_second()
 
     def set_sound_name(self, sound):
         if sound != "/":
@@ -27,6 +56,7 @@ class PlayerPresenter():
     def set_sound_position_value(self, value):
         self.__sound_position_value = float(value)
         self.player_view.update_label(value)
+        self.set_sound_seconds(float(value))
 
     def set_button_pressed(self, value):
         self.is_button_length_pressed = value
@@ -35,6 +65,7 @@ class PlayerPresenter():
         if self.is_button_length_pressed:
             print("pressed!!!")
             return
+
         #self.player_view.get_sound_position()
 
     def bind(self, player_view: PlayerView):

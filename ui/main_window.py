@@ -110,6 +110,7 @@ class MainWindow(tk.Tk, PlayerView):
         element_name = self.base_frame.tree.item(self.base_frame.tree.selection())['text']
         self.player_presenter.set_sound_name(self.directory + "/" + element_name)
         self.player_presenter.play(start=True)
+        self.base_frame.play_button.config(text="Pause")
 
     def update_label(self, value):
         #pygame.mixer.music.set_pos(float(value))
@@ -128,7 +129,9 @@ class MainWindow(tk.Tk, PlayerView):
     def resume(self):
         print("onResume")
         pygame.mixer.music.unpause()
+        self.base_frame.play_button.config(text="Pause")
 
     def pause(self):
         print("onPause")
+        self.base_frame.play_button.config(text="Play")
         pygame.mixer.music.pause()

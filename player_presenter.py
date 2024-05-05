@@ -21,7 +21,8 @@ class PlayerPresenter():
 
 
     def set_pos(self):
-        self.player_view.change_sound_position(self.__sound_position_value)
+        if self.is_playing or self.is_paused:
+            self.player_view.change_sound_position(self.__sound_position_value)
 
     def set_sound_position_value(self, value):
         self.__sound_position_value = float(value)

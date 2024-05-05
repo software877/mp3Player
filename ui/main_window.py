@@ -41,8 +41,10 @@ class MainWindow(tk.Tk, PlayerView):
         self.base_frame.sound_length_value.bind('<ButtonRelease-1>', self.unpress)
 
         self.base_frame.volume.config(command=self.update_volume)
-        self.base_frame.sound_length_value.config(command=self.update_label)
+        self.base_frame.sound_length_value.config(command=self.player_presenter.set_sound_position_value)
         self.base_frame.play_button.config(command=self.player_presenter.play)
+
+        self.base_frame.isLoop.config(command=self.player_presenter.loop_checkbox_clicked)
 
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
@@ -57,7 +59,14 @@ class MainWindow(tk.Tk, PlayerView):
 
     def unpress(self, event):
         self.player_presenter.set_button_pressed(False)
+        self.player_presenter.set_pos()
         print("unpressed")
+
+    def loop_checkbox_clicked(self):
+        self.player_presenter.set_loop_value(self.base_frame.loop_value.get())
+
+    def change_sound_position(self, value):
+        pygame.mixer.music.set_pos(value)
 
     def on_closing(self):
         self.PROGRAM_RUNS = False
@@ -76,7 +85,7 @@ class MainWindow(tk.Tk, PlayerView):
                     print("sound finished!!!")
                     self.player_presenter.stop()
 
-            self.player_presenter.button_length_listener()
+            #self.player_presenter.button_length_listener()
 
 
     def get_sound_position(self):
@@ -103,7 +112,7 @@ class MainWindow(tk.Tk, PlayerView):
         self.player_presenter.play(start=True)
 
     def update_label(self, value):
-        pygame.mixer.music.set_pos(float(value))
+        #pygame.mixer.music.set_pos(float(value))
         self.base_frame.sound_length_label.config(text=f"Length: {value}")
 
     def update_volume(self, value):
@@ -112,9 +121,9 @@ class MainWindow(tk.Tk, PlayerView):
     def stop(self):
         print("stop")
 
-    def play(self, sound_name):
+    def play(self, sound_name, is_loop = 0):
         pygame.mixer.music.load(sound_name)
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(loops=is_loop)
 
     def resume(self):
         print("onResume")

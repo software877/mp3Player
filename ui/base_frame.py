@@ -10,6 +10,7 @@ class BaseFrame(Frame):
     sound_length_label: ttk.Label = None
     volume: ttk.Scale = None
     sound_length_value: ttk.Scale = None
+    loop_value = 0
 
     def __init__(self, root):
         super().__init__(master=root)
@@ -53,10 +54,10 @@ class BaseFrame(Frame):
         self.sound_length_label.grid(row=7, column=0, sticky='sew')
 
 
-        a = tk.IntVar()
+        self.loop_value = tk.IntVar()
 
         self.isLoop = tk.Checkbutton(self, text="isLoop",
-                         variable=a,
+                         variable=self.loop_value,
                          onvalue=1, offvalue=0,
                          command="")
 

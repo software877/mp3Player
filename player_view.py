@@ -14,7 +14,7 @@ class PlayerView():
 
     def to_the_beginning(self):
         pass
-    def play(self, sound_name):
+    def play(self, sound_name, is_loop):
         pass
 
     def get_sound_position(self):
@@ -26,7 +26,12 @@ class PlayerView():
     def pause(self):
         pass
 
-    def change_sound_position(self):
+    def update_label(self, value):
+        pass
+    def change_sound_position(self, value):
+        pass
+
+    def loop_checkbox_clicked(self):
         pass
 
     def isLoop(self):

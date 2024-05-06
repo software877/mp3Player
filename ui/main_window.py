@@ -16,6 +16,7 @@ class MainWindow(tk.Tk, PlayerView):
     STOPPED_PLAYING = pygame.USEREVENT + 1
     PROGRAM_RUNS = True
     sound_length = 0
+    music_list_hidden = False
 
     def __init__(self):
         super().__init__()
@@ -23,7 +24,7 @@ class MainWindow(tk.Tk, PlayerView):
         pygame.init()
         pygame.mixer.music.set_endevent(self.STOPPED_PLAYING)
 
-        #threading.Thread(target=self.event_listener).start()
+        # threading.Thread(target=self.event_listener).start()
 
         self.player_presenter.bind(self)
 
@@ -32,6 +33,7 @@ class MainWindow(tk.Tk, PlayerView):
 
         main_menu = MainMenu()
         main_menu.set_on_change_directory_click(self.open_new_directory)
+        main_menu.set_on_hide_music_list(self.hide_music_list)
 
         self.config(menu=main_menu)
 
@@ -50,8 +52,15 @@ class MainWindow(tk.Tk, PlayerView):
 
         threading.Thread(target=self.event_listener).start()
 
-
         self.mainloop()
+
+    def hide_music_list(self):
+        if self.music_list_hidden:
+            self.base_frame.tree.grid(row=0, column=0, sticky='nsew')
+            self.music_list_hidden = False
+            return
+        self.base_frame.tree.grid_remove()
+        self.music_list_hidden = True
 
     def base(self, event):
         self.player_presenter.set_button_pressed(True)
@@ -91,7 +100,7 @@ class MainWindow(tk.Tk, PlayerView):
     def get_sound_position(self):
         pos = pygame.mixer.music.get_pos()
         print(pos)
-        #self.base_frame.sound_length_value.set(pos)
+        # self.base_frame.sound_length_value.set(pos)
 
     def open_new_directory(self):
         self.directory = askdirectory()
@@ -113,12 +122,12 @@ class MainWindow(tk.Tk, PlayerView):
         self.base_frame.play_button.config(text="Pause")
 
     def update_label(self, value):
-        #pygame.mixer.music.set_pos(float(value))
+        # pygame.mixer.music.set_pos(float(value))
         self.base_frame.sound_length_label.config(text=f"Length: {value}")
 
     def update_slider(self, value):
         print(f"slider has been updated: {value}")
-        #self.base_frame.sound_length_var.set(value)
+        # self.base_frame.sound_length_var.set(value)
         self.base_frame.sound_length_value.set(value)
 
     def update_volume(self, value):
@@ -128,7 +137,7 @@ class MainWindow(tk.Tk, PlayerView):
         self.player_presenter.reset_sounds_second()
         print("stop")
 
-    def play(self, sound_name, is_loop = 0):
+    def play(self, sound_name, is_loop=0):
         pygame.mixer.music.load(sound_name)
         pygame.mixer.music.play(loops=is_loop)
 
@@ -136,7 +145,6 @@ class MainWindow(tk.Tk, PlayerView):
         print("onResume")
         pygame.mixer.music.unpause()
         self.base_frame.play_button.config(text="Pause")
-
 
     def pause(self):
         print("onPause")

@@ -34,6 +34,7 @@ class MainWindow(tk.Tk, PlayerView):
         main_menu = MainMenu()
         main_menu.set_on_change_directory_click(self.open_new_directory)
         main_menu.set_on_hide_music_list(self.hide_music_list)
+        main_menu.set_update_music_list(self.fill_tree)
 
         self.config(menu=main_menu)
 

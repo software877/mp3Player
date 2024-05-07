@@ -22,6 +22,9 @@ class MainMenu(Menu):
         self.add_cascade(label="Tools",
                          menu=self.tools_menu)
 
+    def set_update_music_list(self, update_music_list):
+        self.tools_menu.add_command(label="Update music list", command=update_music_list)
+
     def set_on_hide_music_list(self, hide_music_list):
         self.tools_menu.add_command(label="Hide/Show music list", command=hide_music_list)
 
